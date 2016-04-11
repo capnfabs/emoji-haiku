@@ -1,14 +1,11 @@
 # Emoji Haiku!
 
-> 🌌 🏕️
->
-> 🇹🇩 🖖
->
+> 🌌 🏕️<br>
+> 🇹🇩 🖖<br>
 > 🎽 📛
-> MILKY WAY CAMPING
 >
-> FLAG FOR CHAD VULCAN SALUTE
->
+> MILKY WAY CAMPING <br>
+> FLAG FOR CHAD VULCAN SALUTE <br>
 > RUNNING SHIRT NAME BADGE
 
 ## What?
