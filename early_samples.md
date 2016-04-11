@@ -1,0 +1,48 @@
+# Early samples
+
+## 1.
+
+Init'd with seed of 1, which Golang does if you forget to call rand.Seed().
+
+⚾️ 🍷 🛡️
+💳 ⛪️ 🌫️ 🐺
+🐷 💺 🐿️
+BASEBALL WINE GLASS SHIELD
+CREDIT CARD CHURCH FOG WOLF FACE
+PIG FACE SEAT CHIPMUNK
+
+## 2.
+
+💩 🐷
+🐩 🏰 🛀 🧀
+🇲🇱 🚪
+PILE OF POO PIG FACE
+POODLE CASTLE BATH CHEESE WEDGE
+FLAG FOR MALI DOOR
+
+## 3.
+
+🐩 🔗
+🌠 👔 🍙
+🍭 ♓️
+POODLE LINK SYMBOL
+SHOOTING STAR NECKTIE RICE BALL
+LOLLIPOP PISCES
+
+## 4.
+
+🖋️ 💫
+👔 🎱 🏰 🛏️
+💺 🌻 🍑
+FOUNTAIN PEN DIZZY
+NECKTIE BILLIARDS CASTLE BED
+SEAT SUNFLOWER PEACH
+
+## 5.
+
+🌌 🏕️
+🇹🇩 🖖
+🎽 📛
+MILKY WAY CAMPING
+FLAG FOR CHAD VULCAN SALUTE
+RUNNING SHIRT NAME BADGE
