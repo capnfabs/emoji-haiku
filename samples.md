@@ -2,38 +2,38 @@
 
 ## 1.
 
-Init'd with seed of 1, which Golang does if you forget to call rand.Seed().
+This one was the first I ever generated, and it was 100% reproducible because I forgot to call `rand.Seed()`.
 
-⚾️ 🍷 🛡️
-💳 ⛪️ 🌫️ 🐺
-🐷 💺 🐿️
-BASEBALL WINE GLASS SHIELD
-CREDIT CARD CHURCH FOG WOLF FACE
-PIG FACE SEAT CHIPMUNK
+> ⚾️ 🍷 🛡️<br>
+> 💳 ⛪️ 🌫️ 🐺<br>
+> 🐷 💺 🐿️<br>
+> BASEBALL WINE GLASS SHIELD<br>
+> CREDIT CARD CHURCH FOG WOLF FACE<br>
+> PIG FACE SEAT CHIPMUNK
 
 ## 2.
 
-💩 🐷
-🐩 🏰 🛀 🧀
-🇲🇱 🚪
-PILE OF POO PIG FACE
-POODLE CASTLE BATH CHEESE WEDGE
-FLAG FOR MALI DOOR
+> 💩 🐷<br>
+> 🐩 🏰 🛀 🧀<br>
+> 🇲🇱 🚪<br>
+> PILE OF POO PIG FACE<br>
+> POODLE CASTLE BATH CHEESE WEDGE<br>
+> FLAG FOR MALI DOOR<br>
 
 ## 3.
 
-🐩 🔗
-🌠 👔 🍙
-🍭 ♓️
-POODLE LINK SYMBOL
-SHOOTING STAR NECKTIE RICE BALL
-LOLLIPOP PISCES
+> 🐩 🔗<br>
+> 🌠 👔 🍙<br>
+> 🍭 ♓️<br>
+> POODLE LINK SYMBOL<br>
+> SHOOTING STAR NECKTIE RICE BALL<br>
+> LOLLIPOP PISCES<br>
 
 ## 4.
 
-🖋️ 💫
-👔 🎱 🏰 🛏️
-💺 🌻 🍑
-FOUNTAIN PEN DIZZY
-NECKTIE BILLIARDS CASTLE BED
-SEAT SUNFLOWER PEACH
+> 🖋️ 💫<br>
+> 👔 🎱 🏰 🛏️<br>
+> 💺 🌻 🍑<br>
+> FOUNTAIN PEN DIZZY<br>
+> NECKTIE BILLIARDS CASTLE BED<br>
+> SEAT SUNFLOWER PEACH<br>
