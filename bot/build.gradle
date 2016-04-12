@@ -1,5 +1,4 @@
 group 'net.capnfabs.emojihaiku'
-version '0.1'
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -11,7 +10,7 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-mainClassName = "net.capnfabs.emojihaiku.Main"
+mainClassName = "net.capnfabs.emojihaiku.main.Main"
 
 dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.6.2'

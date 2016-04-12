@@ -1,5 +1,6 @@
 package net.capnfabs.emojihaiku;
 
+import net.capnfabs.emojihaiku.datamodel.EmojiDescriptionSyllableCount;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;

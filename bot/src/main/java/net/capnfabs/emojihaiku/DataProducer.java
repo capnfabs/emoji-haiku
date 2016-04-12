@@ -2,11 +2,15 @@ package net.capnfabs.emojihaiku;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import net.capnfabs.emojihaiku.datamodel.EmojiDescriptionSyllableCount;
+import net.capnfabs.emojihaiku.datamodel.EmojiEntry;
+import net.capnfabs.emojihaiku.datamodel.SyllableEntry;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +33,10 @@ public class DataProducer {
    */
   private static final String NOT_LETTERS_REGEX = "[^A-Za-z]";
 
-  public static <T> T loadJson(File json, Class<T> clazz)
+  public static <T> T loadJson(String resourcePath, Class<T> clazz)
       throws FileNotFoundException, IOException {
-    try (FileInputStream inputStream = new FileInputStream(json)) {
+    ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+    try (InputStream inputStream = classloader.getResourceAsStream(resourcePath)) {
       Gson gson = new Gson();
       JsonReader jsonReader = gson.newJsonReader(new InputStreamReader(inputStream));
       return gson.fromJson(jsonReader, clazz);
