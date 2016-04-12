@@ -34,7 +34,7 @@ public class Generator {
       // Choose an emoji at random
       EmojiDescriptionSyllableCount emoji = selectionSpace.get(random.nextInt(selectionSpace.size()));
       emojis.add(emoji.emoji.emojiChar);
-      descriptions.add(emoji.description);
+      descriptions.add(emoji.description.toUpperCase());
       budget -= emoji.syllableCount;
     }
     return Pair.of(String.join(" ", emojis), String.join(" ", descriptions));
