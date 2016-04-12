@@ -1,12 +1,10 @@
 package net.capnfabs.emojihaiku.lambda;
 
-import net.capnfabs.emojihaiku.DataProducer;
 import net.capnfabs.emojihaiku.Generator;
 import net.capnfabs.emojihaiku.Util;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
-import java.util.Random;
 
 /**
  * AWS Lambda functions
