@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,7 +39,8 @@ public class DataProducer {
     ClassLoader classloader = Thread.currentThread().getContextClassLoader();
     try (InputStream inputStream = classloader.getResourceAsStream(resourcePath)) {
       Gson gson = new Gson();
-      JsonReader jsonReader = gson.newJsonReader(new InputStreamReader(inputStream));
+      JsonReader jsonReader = gson.newJsonReader(
+          new InputStreamReader(inputStream, Charset.forName("UTF-8")));
       return gson.fromJson(jsonReader, clazz);
     }
   }

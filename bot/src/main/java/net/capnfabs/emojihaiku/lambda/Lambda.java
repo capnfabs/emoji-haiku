@@ -1,10 +1,15 @@
 package net.capnfabs.emojihaiku.lambda;
 
+import com.amazonaws.services.lambda.runtime.Context;
+import com.google.gson.Gson;
 import net.capnfabs.emojihaiku.Generator;
 import net.capnfabs.emojihaiku.Util;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * AWS Lambda functions
