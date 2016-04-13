@@ -37,3 +37,12 @@ This one was the first I ever generated, and it was 100% reproducible because I 
 > FOUNTAIN PEN DIZZY<br>
 > NECKTIE BILLIARDS CASTLE BED<br>
 > SEAT SUNFLOWER PEACH<br>
+
+## 5.
+
+> 😱<br>
+> 🎽 👑 🕳️<br>
+> 🐝 🗡️<br>
+> FACE SCREAMING IN FEAR<br>
+> RUNNING SHIRT WITH SASH CROWN HOLE<br>
+> HONEYBEE DAGGER<br>
