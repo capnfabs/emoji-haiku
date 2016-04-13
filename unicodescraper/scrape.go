@@ -42,7 +42,8 @@ func main() {
 func trimAll(ss []string) []string {
 	ret := make([]string, len(ss))
 	for i, s := range ss {
-		ret[i] = strings.ToLower(strings.TrimSpace(s))
+		// Trim spaces, lowercase, replace "smart quote" apostrophes with real ones.
+		ret[i] = strings.Replace(strings.ToLower(strings.TrimSpace(s)), "’", "'", -1)
 	}
 	return ret
 }
