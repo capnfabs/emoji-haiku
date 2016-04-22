@@ -8,11 +8,15 @@
 > FLAG FOR CHAD VULCAN SALUTE <br>
 > RUNNING SHIRT NAME BADGE
 
+
+
 ## What?
 
 Emoji Haiku is a small program that generates nonsense poems in a 5-7-5 syllable pattern based on
-the [Unicode emoji descriptions](http://unicode.org/emoji/charts/full-emoji-list.html)
-(_Warning: 46 MB page_).
+the Unicode emoji descriptions.
+
+Generate your own at [capnfabs.net/emoji-haiku](http://capnfabs.net/emoji-haiku), or follow
+[@emojihaikus on twitter](http://twitter.com/emojihaikus) for one per day 😁
 
 ## How do I use it?
 
