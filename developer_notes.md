@@ -1,7 +1,3 @@
-## Update AWS
+## Build pipeline:
 
-Push a new version to AWS with:
-
-cd java
-./gradlew buildAwsZip
-aws lambda update-function-code --function-name="haiku" --zip-file="fileb://build/distributions/aws-lambda.zip"
+- Download the annotations file: https://unicode.org/repos/cldr/tags/latest/common/annotations/en.xml into `datasources/unicode-english.xml`
