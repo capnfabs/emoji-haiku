@@ -8,6 +8,11 @@ name = "pypi"
 [dev-packages]
 ipython = "*"
 beautifulsoup4 = "*"
+pylint = "*"
+mypy = "*"
 
 [requires]
 python_version = "3.6"
+
+[scripts]
+typecheck = "mypy src"

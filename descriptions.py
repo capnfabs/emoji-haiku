@@ -1,9 +1,10 @@
-from bs4 import BeautifulSoup
-from typing import NamedTuple, List, Iterable, Dict
+from bs4 import BeautifulSoup  # type: ignore
+from typing import NamedTuple, List, Iterable, Dict, Set
 import re
 from collections import defaultdict
 import itertools
 import json
+import os
 
 class EmojiAndDescription(NamedTuple):
     emoji: str
@@ -29,9 +30,9 @@ def _load_vowels() -> Iterable[str]:
                 yield sound
 
 
-def load_pronunciations() -> Dict[str, List[int]]:
+def load_pronunciations() -> Dict[str, Set[int]]:
     vowels = set(_load_vowels())
-    dataset = defaultdict(lambda: set())
+    dataset: Dict[str, Set[int]] = defaultdict(lambda: set())
     
     regex = re.compile(r'(?P<word>.*)\(\d+\)')
 
@@ -120,7 +121,7 @@ def adjust_word(word: str) -> List[str]:
     return word.split('-')
 
 
-def count_syllables(words: List[str], source_dict: Dict[str, List[int]]) -> List[int]:
+def count_syllables(words: List[str], source_dict: Dict[str, Set[int]]) -> Set[int]:
     # A set with just the value 0 in it
     totals = {0}
     for word in words:
@@ -134,7 +135,7 @@ def merged_results() -> Iterable[EmojiDetails]:
 
     # Add the overrides
     for key, val in OVERRIDES.items():
-        pronunciations[key] = [val]
+        pronunciations[key] = {val}
 
     # compute the data
     for emoji in extract_emoji_pairs():
@@ -151,6 +152,7 @@ def write_results_to_json(filename: str) -> None:
 
 def main():
     # TODO: this JSON is ugly, and might be nicer as a dict?
+    os.makedirs('build')
     write_results_to_json('build/generated.json')
 
 if __name__ == '__main__':
