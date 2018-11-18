@@ -16,8 +16,10 @@ var/
 .installed.cfg
 *.egg
 
-# Serverless directories
+# Serverless directories, associated dependencies / plugins
 .serverless
+node_modules/
 
 # Tooling
 .vscode/
+.mypy_cache/

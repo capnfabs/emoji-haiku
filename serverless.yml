@@ -4,8 +4,13 @@ frameworkVersion: ">=1.2.0 <2.0.0"
 
 provider:
   name: aws
-  runtime: python3.7
+  # Keep this in sync with the one in the Pipfile.
+  runtime: python3.6
 
+# TODO(fabian): I don't know why this works, and I suspect it _shouldn't_. This is probably
+# because running `serverless deploy` just ships all files in the current directory to AWS 
+# indiscriminantly (I guess), and I'm not trying to build anything properly with 
+# `serverless package`.
 package:
   include:
     - common/**
@@ -24,3 +29,6 @@ functions:
       - http:
           path: haiku
           method: get
+
+plugins:
+  - serverless-python-requirements
