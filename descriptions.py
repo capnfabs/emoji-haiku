@@ -23,7 +23,7 @@ def extract_emoji_pairs() -> Iterable[EmojiAndDescription]:
 
 
 def _load_vowels() -> Iterable[str]:
-    with open('datasources/cmudict-0.7b.phones.txt') as key:
+    with open('datasources/cmudict/cmudict-0.7b.phones.txt') as key:
         for line in key:
             sound, sound_type = line.split()
             if sound_type == 'vowel':
@@ -36,7 +36,7 @@ def load_pronunciations() -> Dict[str, Set[int]]:
     
     regex = re.compile(r'(?P<word>.*)\(\d+\)')
 
-    with open('datasources/cmudict-0.7b.txt') as file:
+    with open('datasources/cmudict/cmudict-0.7b.txt') as file:
         for line in file:
             if line.startswith(';;;'):
                 # ignore
