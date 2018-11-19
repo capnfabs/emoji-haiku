@@ -1,6 +1,7 @@
 # The emoji-zwj-sequences.txt file is hard to parse in an automated fashion for the stuff I want to do, so we're doing it by hand.
 # 
 # Everything in 'Emoji ZWJ Sequence: Gendered Role, with object' supports gendering and skin color.
+# format: man_or_woman this_code
 GENDERED_ROLE_WITH_OBJECT__OBJECTS = {
     0x2695,
     0x2696,

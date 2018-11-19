@@ -65,40 +65,54 @@ class Emoji:
 
         built_str = ''
 
+        modifier_added = False
+
+        def maybe_add_modifier() -> None:
+            # This feels... nasty.
+            nonlocal modifier_added
+            nonlocal built_str
+            nonlocal modifier
+
+            if modifier and not modifier_added:
+                assert self.supports_modification
+                modifier_added = True
+                # As per spec:
+                # > Emoji presentation selectors are neither needed nor recommended for emoji characters
+                # > when they are followed by emoji modifiers, and should not be used in newly generated
+                # > emoji modifier sequences; the emoji modifier automatically implies the emoji
+                # > presentation style.
+                built_str += modifier
+
         if gender != Gender.NEUTRAL:
             assert self.gender_mode != GenderMode.NONE
-            # TODO: finish the object mode gendering code.
-            pass
+
+        if gender != Gender.NEUTRAL and self.gender_mode == GenderMode.OBJECT_FORMAT:
+            built_str += gender.value.object_format
+            # The modifier has to go before the join here, which is super inconvenient. Probably
+            # the 'correct' way to represent these is with the role as the modifier, and 'man' as
+            # the object, but that doesn't work super well for the whole purpose of this code, in
+            # that we want to be able to enumerate emoji and then gender/race bend them.
+            maybe_add_modifier()
+            built_str += ZWJ
 
         built_str += self.base_char
 
-        if modifier:
-            assert self.supports_modification
-            # As per spec:
-            # > Emoji presentation selectors are neither needed nor recommended for emoji characters 
-            # > when they are followed by emoji modifiers, and should not be used in newly generated 
-            # > emoji modifier sequences; the emoji modifier automatically implies the emoji 
-            # > presentation style.
-            built_str += self.base_char
-        
+        maybe_add_modifier()
+
         if gender != Gender.NEUTRAL and self.gender_mode == GenderMode.SIGN_FORMAT:
             built_str += ZWJ + gender.value.sign_format
-            
-        
+
         if self.defaults_to_text:
-            # If you want to validate that the sequence constructed here is correct, the datasource 
+            # If you want to validate that the sequence constructed here is correct, the datasource
             # for this is in emoji-variation-sequences.txt.
-            return self.base_char + EMOJI_PRESENTATION_SELECTOR
+            built_str += EMOJI_PRESENTATION_SELECTOR
 
-
-        
-        # Catch-all / fall-through
-        return self.base_char
+        return built_str
 
     def __repr__(self) -> str:
         return f'Emoji(codepoint={hex(self.codepoint)[2:]}, defaults_to_text={self.defaults_to_text}, supports_modification={self.supports_modification}, gender_mode={self.gender_mode})'
 
-    
+
 def load_codepoints(data_directory: str) -> Dict[CodePoint, CodePointInfo]:
     """Returns a Dict mapping every possible emoji character to information known about it, from the
     unicode data specification.
@@ -126,19 +140,17 @@ def _scan_codepoints_file(data_directory: str) -> Iterable[Tuple[str,str, Option
     """
     path = os.path.join(data_directory, 'emoji-data.txt')
     with open(path, 'r') as file:
-        # NOTE(fabian): I thought about using the csv module for this, but decided against it 
-        # because of  the fact that the file structure has comments with # at the end. If you _did_ 
-        # want to change this to CSV, I'd probably do it by wrapping `file` with something that 
+        # NOTE(fabian): I thought about using the csv module for this, but decided against it
+        # because of  the fact that the file structure has comments with # at the end. If you _did_
+        # want to change this to CSV, I'd probably do it by wrapping `file` with something that
         # stripped comments.
         for line in file:
             line, comment = _remove_comment(line)
             if not line:
                 # It was just a comment, continue
                 continue
-        
+
             fields = [field.strip() for field in line.split(';')]
-            #print('Fields:', fields)
-            #print('Comment: ', comment)
             assert len(fields) == 2
             # Codepoint or range, class
             yield fields[0], fields[1], comment
@@ -186,7 +198,7 @@ def make_data() -> EmojiData:
     return EmojiData(emojis, modifiers)
 
 def yield_swatch_chars(emoji: List[Emoji], mods: List[Modifier]) -> Iterable[str]:
-    """Debug method: takes a list of emoji and possible modifiers and yields each one in turn. 
+    """Debug method: takes a list of emoji and possible modifiers and yields each one in turn.
     Anything modifiable gets a random modification.
 
     You can use the output as an argument to `str.join` and then print it.
@@ -196,14 +208,18 @@ def yield_swatch_chars(emoji: List[Emoji], mods: List[Modifier]) -> Iterable[str
     for e in emoji:
         modifier = random.choice(mods) if e.supports_modification else None
         gender = random.choice(list(Gender)) if e.gender_mode != GenderMode.NONE else Gender.NEUTRAL
-        yield e.char(modifier=modifier, gender=gender)
+        char = e.char(modifier=modifier, gender=gender)
+        yield char + ' --> ' + to_unicode_cps(char)
+
+
+def to_unicode_cps(data: str) -> str:
+    return ' '.join(hex(ord(c))[2:] for c in data)
 
 
 def main() -> None:
     emoji, mods = make_data()
-    print(' '.join(yield_swatch_chars(emoji, mods)))
+    print('\n'.join(yield_swatch_chars(emoji, mods)))
 
-    
 
 if __name__ == "__main__":
     main()

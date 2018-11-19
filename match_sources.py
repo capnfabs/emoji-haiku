@@ -1,7 +1,7 @@
 from emoji import make_data
 from descriptions import merged_results
 
-def main():
+def main() -> None:
     emoji_list, modifiers = make_data()
 
     descriptions = {e.emoji: e for e in merged_results()}
