@@ -1,11 +1,11 @@
 ## Build pipeline:
 
-- Download some data sources: 
-  - The CLDR latest english XML file. Note that this is used as the source of truth for what constitutes a valid emoji! If there's stuff in here that's in pre-release versions of the spec, it's going to cause compatability issues. If this causes major problems, consider filtering it by something in the official 'machine-readable' files associated with the unicode spec. 
+- Download some data sources:
+  - The CLDR latest english XML file. Note that this is used as the source of truth for what constitutes a valid emoji! If there's stuff in here that's in pre-release versions of the spec, it's going to cause compatability issues. If this causes major problems, consider filtering it by something in the official 'machine-readable' files associated with the unicode spec.
     - Here's the CLDR localization datasource for english: https://unicode.org/repos/cldr/tags/latest/common/annotations/en.xml. Save that as `datasources/unicode-english.xml`.
     - If you later need to cross-reference it to (e.g.) version 11 of the unicode spec, here's the official files: https://unicode.org/Public/emoji/11.0/
     - There's a lot of emojis that won't turn up using this datasource: notably, keycaps and flags. Use this source instead, if that's important to you: https://www.unicode.org/repos/cldr/tags/latest/common/annotationsDerived/en.xml
-- Create an account here: 
+- Create an account here:
   - Don't forget to create access credentials, and run `serverless config credentials --provider aws --key [key] --secret [secret]`
 - serverless deploy -v && serverless invoke -f haiku -l
 
@@ -26,3 +26,10 @@ The official emoji spec: http://www.unicode.org/reports/tr51/tr51-14.html (this 
 The directory `datasources/emoji-unicode-11` is a copy of https://unicode.org/Public/emoji/11.0/, which, according to their FTP server, was last modified 2018-02-07, and was retrieved 2018-11-19.
 
 According to spec, valid unicode codepoints are from 0x0 to 0x10FFFF (see http://unicode.org/glossary/#code_point).
+
+# TODO:
+- Maybe add more emoji. We're missing flags, for example, and they were something I liked about v1?
+- Sort out genders in the CLDR XML descriptions. There's a few pieces here:
+  - Modify the description parsing code to scan the CLDR XML file and deduplicate (for example) 'man artist' 'woman artist'.
+  - This is complicated though, because the verb ones still need an actor, I think. We can make it sometimes say "person" instead of "man" or "woman" as well though.
+  - Also have to watch out for merman/merperson/mermaid 🧜‍♂️ 🧜‍♀️
