@@ -1,25 +1,28 @@
 """Super lightweight emoji library."""
 
-from typing import NamedTuple, Tuple, Dict, Set, Iterable, Optional, List
-import os.path
-from collections import defaultdict
-import random
-import emoji_unicode_11_manual_supplement as supplement
 import enum
+import os.path
+import random
+from collections import defaultdict
+from typing import Dict, Iterable, List, NamedTuple, Optional, Set, Tuple
+
+import emoji_unicode_11_manual_supplement as supplement
+
 
 CodePoint = int
 UnicodeClass = str
+Modifier = str
 
 # Append these to a string to force text / emoji display.
 TEXT_PRESENTATION_SELECTOR = '\uFE0E'
 EMOJI_PRESENTATION_SELECTOR = '\uFE0F'
 ZWJ = '\u200D'
 
+
 class CodePointInfo(NamedTuple):
     classes: Set[UnicodeClass]
     comments: Set[str]
 
-Modifier = str
 
 def makeCPI() -> CodePointInfo:
     return CodePointInfo(set(), set())
@@ -30,19 +33,26 @@ class GenderMode(enum.Enum):
     SIGN_FORMAT = enum.auto()
     OBJECT_FORMAT = enum.auto()
 
+
 class GenderRepresentation(NamedTuple):
     sign_format: str
     object_format: str
 
+
 class Gender(enum.Enum):
     # Don't try and dereference this one :D
-    NEUTRAL   = None
+    NEUTRAL = None
     MASCULINE = GenderRepresentation(supplement.MALE, supplement.MAN)
-    FEMININE  = GenderRepresentation(supplement.FEMALE, supplement.WOMAN)
+    FEMININE = GenderRepresentation(supplement.FEMALE, supplement.WOMAN)
 
 
 class Emoji:
-    def __init__(self, codepoint: int, defaults_to_text: bool, supports_modification: bool, gender_mode: GenderMode):
+    def __init__(
+            self,
+            codepoint: int,
+            defaults_to_text: bool,
+            supports_modification: bool,
+            gender_mode: GenderMode):
         self.codepoint = codepoint
         self.base_char = chr(codepoint)
 
@@ -52,7 +62,6 @@ class Emoji:
         self.supports_modification = supports_modification
 
         self.gender_mode = gender_mode
-
 
     def char(self, modifier: Modifier = None, gender: Gender = Gender.NEUTRAL) -> str:
         """Turns the Emoji into a fragment of a string.
@@ -77,10 +86,10 @@ class Emoji:
                 assert self.supports_modification
                 modifier_added = True
                 # As per spec:
-                # > Emoji presentation selectors are neither needed nor recommended for emoji characters
-                # > when they are followed by emoji modifiers, and should not be used in newly generated
-                # > emoji modifier sequences; the emoji modifier automatically implies the emoji
-                # > presentation style.
+                # > Emoji presentation selectors are neither needed nor recommended for emoji
+                # > characters when they are followed by emoji modifiers, and should not be used in
+                # > newly generated emoji modifier sequences; the emoji modifier automatically
+                # > implies the emoji presentation style.
                 built_str += modifier
 
         if gender != Gender.NEUTRAL:
@@ -110,7 +119,11 @@ class Emoji:
         return built_str
 
     def __repr__(self) -> str:
-        return f'Emoji(codepoint={hex(self.codepoint)[2:]}, defaults_to_text={self.defaults_to_text}, supports_modification={self.supports_modification}, gender_mode={self.gender_mode})'
+        return (f'Emoji('
+                f'codepoint={hex(self.codepoint)[2:]}, '
+                f'defaults_to_text={self.defaults_to_text}, '
+                f'supports_modification={self.supports_modification}, '
+                f'gender_mode={self.gender_mode})')
 
 
 def load_codepoints(data_directory: str) -> Dict[CodePoint, CodePointInfo]:
@@ -132,7 +145,7 @@ def load_codepoints(data_directory: str) -> Dict[CodePoint, CodePointInfo]:
     return result
 
 
-def _scan_codepoints_file(data_directory: str) -> Iterable[Tuple[str,str, Optional[str]]]:
+def _scan_codepoints_file(data_directory: str) -> Iterable[Tuple[str, str, Optional[str]]]:
     """Returns an Iterable of tuples from the codepoints file. Each Tuple is:
     - codepoint (or range of codepoints)
     - unicode class
@@ -196,6 +209,7 @@ def make_data() -> EmojiData:
             # ??? i dunno something else.
             pass
     return EmojiData(emojis, modifiers)
+
 
 def yield_swatch_chars(emoji: List[Emoji], mods: List[Modifier]) -> Iterable[str]:
     """Debug method: takes a list of emoji and possible modifiers and yields each one in turn.

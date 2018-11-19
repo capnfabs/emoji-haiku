@@ -2,10 +2,10 @@
 
 Copied from: https://gist.github.com/alexcasalboni/a545b68ee164b165a74a20a5fee9d133
 
-This is an _actual python file_ because there isn't a corresponding python file, so a pyi file doesn't work.
-It doesn't cause any problems, because this code is never actually _used_.
+This is an _actual python file_ because there isn't a corresponding python file, so a pyi file
+doesn't work. It doesn't cause any problems, because this code is never actually _used_.
 """
-from typing import Dict, Any
+from typing import Any, Dict
 
 LambdaDict = Dict[str, Any]
 

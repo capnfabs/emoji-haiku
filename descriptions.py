@@ -1,19 +1,22 @@
-from bs4 import BeautifulSoup  # type: ignore
-from typing import NamedTuple, List, Iterable, Dict, Set
-import re
-from collections import defaultdict
-import itertools
 import json
 import os
+import re
+from collections import defaultdict
+from typing import Dict, Iterable, List, NamedTuple, Set
+
+from bs4 import BeautifulSoup  # type: ignore
+
 
 class EmojiAndDescription(NamedTuple):
     emoji: str
     description: str
 
+
 class EmojiDetails(NamedTuple):
     emoji: str
     description: str
     syllable_counts: List[int]
+
 
 def extract_emoji_pairs() -> Iterable[EmojiAndDescription]:
     with open('datasources/unicode-english.xml') as xmlfile:
@@ -33,7 +36,7 @@ def _load_vowels() -> Iterable[str]:
 def load_pronunciations() -> Dict[str, Set[int]]:
     vowels = set(_load_vowels())
     dataset: Dict[str, Set[int]] = defaultdict(lambda: set())
-    
+
     regex = re.compile(r'(?P<word>.*)\(\d+\)')
 
     with open('datasources/cmudict/cmudict-0.7b.txt') as file:
@@ -41,7 +44,7 @@ def load_pronunciations() -> Dict[str, Set[int]]:
             if line.startswith(';;;'):
                 # ignore
                 continue
-            
+
             row = line.split()
             word_and_variant, *sounds = row
             num_syllables = sum(1 for sound in sounds if sound.rstrip('0123456789') in vowels)
@@ -50,13 +53,15 @@ def load_pronunciations() -> Dict[str, Set[int]]:
             word = match['word'] if match else word_and_variant
 
             counts = dataset[word]
-            
+
             counts.add(num_syllables)
 
     return dataset
 
+
 # This keeps dashes, single quotes, and numbers. They're explicitly allowed.
 _remove_weird_symbols = re.compile(r"[^a-zA-Z\d\-']")
+
 
 OVERRIDES = {
     '1ST': 1,
@@ -113,8 +118,9 @@ OVERRIDES = {
     'ZZZ': 1,
 }
 
+
 def adjust_word(word: str) -> List[str]:
-     # Yep, smart quotes.
+    # Yep, smart quotes.
     word = word.replace('’', "'")
     word = word.upper()
     word = _remove_weird_symbols.sub('', word)
@@ -129,6 +135,7 @@ def count_syllables(words: List[str], source_dict: Dict[str, Set[int]]) -> Set[i
         totals = {t + wc for t in totals for wc in word_counts}
 
     return totals
+
 
 def merged_results() -> Iterable[EmojiDetails]:
     pronunciations = load_pronunciations()
@@ -145,15 +152,18 @@ def merged_results() -> Iterable[EmojiDetails]:
 
         yield EmojiDetails(emoji.emoji, emoji.description, list(options))
 
+
 def write_results_to_json(filename: str) -> None:
     data = list(merged_results())
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
 
+
 def main() -> None:
     # TODO: this JSON is ugly, and might be nicer as a dict?
     os.makedirs('build')
     write_results_to_json('build/generated.json')
+
 
 if __name__ == '__main__':
     main()

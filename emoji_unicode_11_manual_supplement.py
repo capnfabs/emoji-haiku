@@ -1,5 +1,6 @@
-# The emoji-zwj-sequences.txt file is hard to parse in an automated fashion for the stuff I want to do, so we're doing it by hand.
-# 
+# The emoji-zwj-sequences.txt file is hard to parse in an automated fashion for the stuff I want to
+# do, so we're doing it by hand.
+#
 # Everything in 'Emoji ZWJ Sequence: Gendered Role, with object' supports gendering and skin color.
 # format: man_or_woman this_code
 GENDERED_ROLE_WITH_OBJECT__OBJECTS = {
@@ -25,13 +26,14 @@ GENDERED_ROLE_WITH_OBJECT__OBJECTS = {
     0x1F9B3,
 }
 
+
 # Have to use 32-bit representation for this because it's a high-end codepoint.
-MAN   = '\U0001F468'
+MAN = '\U0001F468'
 WOMAN = '\U0001F469'
 
 
 # This is the 'Emoji ZWJ Sequence: Gendered Role' section.
-# Format: this_code skin_color ZWJ gender emoji_presentation 
+# Format: this_code skin_color ZWJ gender emoji_presentation
 GENDERED_ROLE__OBJECTS = {
     0x1F46E,
     0x1F471,
@@ -48,11 +50,13 @@ GENDERED_ROLE__OBJECTS = {
     0x1F9DF,
 }
 
+
 FEMALE = '\u2640'
-MALE   = '\u2642'
+MALE = '\u2642'
+
 
 # Emoji ZWJ Sequence: Gendered Activity
-# Format: this_code skin_color ZWJ gender emoji_presentation 
+# Format: this_code skin_color ZWJ gender emoji_presentation
 GENDERED_ACTIVITY__OBJECTS = {
     0x1F3C3,
     0x1F3C4,
@@ -77,6 +81,7 @@ GENDERED_ACTIVITY__OBJECTS = {
     0x26F9,
 }
 
+
 # Emoji ZWJ Sequence: Gendered Gestures
 GENDERED_GESTURES__OBJECTS = {
     0x1F481,
@@ -92,8 +97,13 @@ GENDERED_GESTURES__OBJECTS = {
     0x1F9B9,
 }
 
-SUPPORTS_SIGN_FORMAT_GENDERING = GENDERED_ACTIVITY__OBJECTS | GENDERED_GESTURES__OBJECTS | GENDERED_ROLE__OBJECTS
+
+SUPPORTS_SIGN_FORMAT_GENDERING = (
+    GENDERED_ACTIVITY__OBJECTS |
+    GENDERED_GESTURES__OBJECTS |
+    GENDERED_ROLE__OBJECTS)
 SUPPORTS_OBJECT_FORMAT_GENDERING = GENDERED_ROLE_WITH_OBJECT__OBJECTS
+
 
 # TODO:
 # Emoji ZWJ Sequence: Other

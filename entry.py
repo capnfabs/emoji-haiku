@@ -1,9 +1,10 @@
-from aws import LambdaContext
-from descriptions import EmojiDetails
-from collections import defaultdict
-from typing import List, Dict, Tuple, Any
 import json
 import random
+from typing import Any, Dict, List, Tuple
+
+from aws import LambdaContext
+
+from descriptions import EmojiDetails
 
 
 def _load_data() -> Dict[int, List[EmojiDetails]]:
@@ -19,6 +20,7 @@ def _load_data() -> Dict[int, List[EmojiDetails]]:
 
     return wup
 
+
 data = _load_data()
 
 
@@ -28,7 +30,9 @@ def _make_line(syllable_count: int) -> Tuple[str, str]:
     while sum(syllables_per_emoji) < syllable_count:
         # This feels hard to read. fix this.
         # The idea is - weight longer emojis in proportion to lengths.
-        allowable_sets = sorted((k, v) for k, v in data.items() if k <= syllable_count - sum(syllables_per_emoji))
+        allowable_sets = sorted(
+            (k, v) for k, v in data.items()
+            if k <= syllable_count - sum(syllables_per_emoji))
         keys, _ = zip(*allowable_sets)
         elements = random.choices(keys, weights=[key * len(val) for key, val in allowable_sets])
         syllables_per_emoji.append(*elements)
@@ -51,6 +55,7 @@ def haiku(_: Any, __: LambdaContext) -> Any:
         'emoji': h[0],
         'descriptions': h[1],
     }
+
 
 def print_haiku() -> None:
     emoji, desc = _haiku()

@@ -1,5 +1,7 @@
-from emoji import make_data
 from descriptions import merged_results
+
+from emoji import make_data
+
 
 def main() -> None:
     emoji_list, modifiers = make_data()
@@ -10,9 +12,8 @@ def main() -> None:
     for emoji in emoji_dict.keys() ^ descriptions.keys():
         src = emoji in emoji_dict
         cldr = emoji in descriptions
-            
-        print(f'{emoji}\tsrc={src}\tcldr={cldr}\tdesc={descriptions[emoji].description if cldr else ""}')
-
+        desc = descriptions[emoji].description if cldr else ""
+        print(f'{emoji}\tsrc={src}\tcldr={cldr}\tdesc={desc}')
 
 
 if __name__ == "__main__":
