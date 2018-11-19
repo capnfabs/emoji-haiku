@@ -24,3 +24,5 @@ Full emoji list:
 The official emoji spec: http://www.unicode.org/reports/tr51/tr51-14.html (this is the latest published version as per this commit, corresponding to Unicode 11.)
 
 The directory datasources/emoji-unicode-11 is a copy of https://unicode.org/Public/emoji/11.0/, which, according to their FTP server, was last modified 2018-02-07, and was retrieved 2018-11-19.
+
+According to spec, valid unicode codepoints are from 0x0 to 0x10FFFF (see http://unicode.org/glossary/#code_point).

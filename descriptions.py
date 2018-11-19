@@ -150,7 +150,7 @@ def write_results_to_json(filename: str) -> None:
     with open(filename, 'w') as outfile:
         json.dump(data, outfile)
 
-def main():
+def main() -> None:
     # TODO: this JSON is ugly, and might be nicer as a dict?
     os.makedirs('build')
     write_results_to_json('build/generated.json')
