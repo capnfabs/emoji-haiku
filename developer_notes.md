@@ -20,3 +20,7 @@ There's a note here about 'standardised variants': http://www.unicode.org/Public
 
 Full emoji list:
 - https://unicode.org/emoji/charts/full-emoji-list.html
+
+The official emoji spec: http://www.unicode.org/reports/tr51/tr51-14.html (this is the latest published version as per this commit, corresponding to Unicode 11.)
+
+The directory datasources/emoji-unicode-11 is a copy of https://unicode.org/Public/emoji/11.0/, which, according to their FTP server, was last modified 2018-02-07, and was retrieved 2018-11-19.
