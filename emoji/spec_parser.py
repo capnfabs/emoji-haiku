@@ -14,7 +14,7 @@ from collections import defaultdict
 from typing import Dict, Iterable, List, NamedTuple, Optional, Set, Tuple
 
 import emoji.emoji_unicode_11_manual_supplement as supplement
-from emoji.core import Emoji, Modifier, _GenderMode
+from emoji.core import Emoji, GenderMode, Modifier
 
 
 class EmojiData(NamedTuple):
@@ -87,13 +87,13 @@ def _remove_comment(line: str) -> Tuple[str, Optional[str]]:
         return vals[0].strip(), vals[1].strip()
 
 
-def _get_gender_mode(codepoint: _CodePoint) -> _GenderMode:
+def _get_gender_mode(codepoint: _CodePoint) -> GenderMode:
     if codepoint in supplement.SUPPORTS_OBJECT_FORMAT_GENDERING:
-        return _GenderMode.OBJECT_FORMAT
+        return GenderMode.OBJECT_FORMAT
     elif codepoint in supplement.SUPPORTS_SIGN_FORMAT_GENDERING:
-        return _GenderMode.SIGN_FORMAT
+        return GenderMode.SIGN_FORMAT
     else:
-        return _GenderMode.NONE
+        return GenderMode.NONE
 
 
 def load_emoji_and_modifiers() -> EmojiData:

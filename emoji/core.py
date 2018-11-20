@@ -18,7 +18,7 @@ _ZWJ = '\u200D'
 Modifier = str
 
 
-class _GenderMode(enum.Enum):
+class GenderMode(enum.Enum):
     # The character doesn't support modification based on gender.
     NONE = enum.auto()
     # The character can be gender-modified, using Sign Format (see The Spec).
@@ -45,7 +45,7 @@ class Emoji:
             codepoint: int,
             defaults_to_text: bool,
             supports_modification: bool,
-            gender_mode: _GenderMode):
+            gender_mode: GenderMode):
         self.codepoint = codepoint
         self.base_char = chr(codepoint)
 
@@ -60,61 +60,53 @@ class Emoji:
         """Turns the Emoji into a fragment of a string.
         Accepts an optional modifier - if set, the skin color of the emoji will
         be modified. Check supports_modification first.
+
+        This is a mess:
+        http://www.unicode.org/reports/tr51/tr51-14.html#Emoji_Variation_Selector_Notes
         """
         # TODO / enhancements:
         # - explicit left/right facing?
 
         built_str = ''
 
-        modifier_added = False
-
-        def maybe_add_modifier() -> None:
-            # This feels... nasty.
-            nonlocal modifier_added
-            nonlocal built_str
-            nonlocal modifier
-
-            if modifier and not modifier_added:
-                assert self.supports_modification
-                modifier_added = True
-                # As per spec:
-                # > Emoji presentation selectors are neither needed nor recommended for emoji
-                # > characters when they are followed by emoji modifiers, and should not be used in
-                # > newly generated emoji modifier sequences; the emoji modifier automatically
-                # > implies the emoji presentation style.
-                built_str += modifier
-
         if gender != Gender.NEUTRAL:
             assert self.supports_gender
 
-        if gender != Gender.NEUTRAL and self.gender_mode == _GenderMode.OBJECT_FORMAT:
+        if gender != Gender.NEUTRAL and self.gender_mode == GenderMode.OBJECT_FORMAT:
+            # This is an entirely different way of building an emoji. This is because this mode has
+            # the MAN or WOMAN emoji as the primary emoji, and then the action is a secondary which
+            # is joined on to the end. It would probably be cleaner to abstract this somehow to
+            # follow that paradigm, but this is a pretty niche case, so let's just test the crap out
+            # of it instead.
             built_str += gender.value.object_format
-            # The modifier has to go before the join here, which is super inconvenient. Probably
-            # the 'correct' way to represent these is with the role as the modifier, and 'man' as
-            # the object, but that doesn't work super well for the whole purpose of this code, in
-            # that we want to be able to enumerate emoji and then gender/race bend them.
-            maybe_add_modifier()
+            if modifier:
+                built_str += modifier
+            # Note that neither the MAN nor the WOMAN character have default text presentation, so
+            # we never need to add the EMOJI_PRESENTATION_SELECTOR here.
+
             built_str += _ZWJ
+            built_str += self.base_char
+            if self.defaults_to_text:
+                built_str += _EMOJI_PRESENTATION_SELECTOR
+            return built_str
 
         built_str += self.base_char
 
-        maybe_add_modifier()
-
-        if gender != Gender.NEUTRAL and self.gender_mode == _GenderMode.SIGN_FORMAT:
-            built_str += _ZWJ + gender.value.sign_format
-
-        # TODO(fabian): I think there's a bug here where we're rendering the presentation selector
-        # when we shouldn't be.
-        if self.defaults_to_text:
-            # If you want to validate that the sequence constructed here is correct, the datasource
-            # for this is in emoji-variation-sequences.txt.
+        if modifier:
+            # Modifiers imply _EMOJI_PRESENTATION_SELECTOR, so it's never required.
+            built_str += modifier
+        elif self.defaults_to_text:
             built_str += _EMOJI_PRESENTATION_SELECTOR
+
+        if gender != Gender.NEUTRAL and self.gender_mode == GenderMode.SIGN_FORMAT:
+            # The sign_format chars require presentation selectors.
+            built_str += _ZWJ + gender.value.sign_format + _EMOJI_PRESENTATION_SELECTOR
 
         return built_str
 
     @property
     def supports_gender(self) -> bool:
-        return self.gender_mode != _GenderMode.NONE
+        return self.gender_mode != GenderMode.NONE
 
     def __repr__(self) -> str:
         return (f'Emoji('
