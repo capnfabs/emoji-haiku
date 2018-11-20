@@ -105,7 +105,7 @@ OVERRIDES = {
     'SAKE': 1,
     'SAUROPOD': 3,
     'SHUSHING': 2,
-    # Maybe 3?
+    # Maybe 3? spar-ker-ler
     'SPARKLER': 2,
     'SPLAYED': 1,
     'SPOKED': 1,

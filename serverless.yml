@@ -24,7 +24,7 @@ package:
 
 functions:
   haiku:
-    handler: entry.haiku
+    handler: api.entry.haiku_handler
     events:
       - http:
           path: haiku

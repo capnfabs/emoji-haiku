@@ -1,12 +1,12 @@
 import json
 import random
-from typing import Any, Dict, List, Tuple
+from typing import Dict, List, Tuple
 
-from aws import LambdaContext
-
-from descriptions import EmojiDetails
+from emoji.descriptions import EmojiDetails
 
 
+# TODO(fabian): Now that we've library-fied the emoji stuff, we should get rid of the save/load
+# thing.
 def _load_data() -> Dict[int, List[EmojiDetails]]:
     with open('build/generated.json') as file:
         thingy = json.load(file)
@@ -43,20 +43,7 @@ def _make_line(syllable_count: int) -> Tuple[str, str]:
     return emojis, descriptions
 
 
-def _haiku() -> Tuple[str, str]:
+def haiku() -> Tuple[str, str]:
     haiku_lines = [_make_line(syllable_count) for syllable_count in [5, 7, 5]]
     emoji, desc = zip(*haiku_lines)
     return ("\n".join(emoji), "\n".join(desc))
-
-
-def haiku(_: Any, __: LambdaContext) -> Any:
-    h = _haiku()
-    return {
-        'emoji': h[0],
-        'descriptions': h[1],
-    }
-
-
-def print_haiku() -> None:
-    emoji, desc = _haiku()
-    print(emoji, desc, sep='\n')

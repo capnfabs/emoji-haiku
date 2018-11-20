@@ -21,4 +21,4 @@ typecheck = "mypy ."
 # TODO: Just stylecheck everything once we work out how to exclude /.serverless, which has heaps of
 # errors.
 stylecheck = "flake8 *.py"
-haiku = "python -c 'import entry; entry.print_haiku()'"
+haiku = "python -c 'import haiku; e, d = haiku.haiku(); print(e); print(d)'"

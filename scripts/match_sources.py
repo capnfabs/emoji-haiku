@@ -1,10 +1,9 @@
-from descriptions import merged_results
-
-from emoji import make_data
+from emoji.descriptions import merged_results
+from emoji.spec_parser import load_emoji_and_modifiers
 
 
 def main() -> None:
-    emoji_list, modifiers = make_data()
+    emoji_list, modifiers = load_emoji_and_modifiers()
 
     descriptions = {e.emoji: e for e in merged_results()}
     emoji_dict = {e.base_char: e for e in emoji_list}
