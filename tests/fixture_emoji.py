@@ -16,24 +16,24 @@ pencil = Emoji(
 
 
 tent = Emoji(
-        0x26FA,
-        defaults_to_text=False,
-        supports_modification=False,
-        gender_mode=GenderMode.NONE)
+    0x26FA,
+    defaults_to_text=False,
+    supports_modification=False,
+    gender_mode=GenderMode.NONE)
 
 
 baby_angel = Emoji(
-        0x1F47C,
-        defaults_to_text=False,
-        supports_modification=True,
-        gender_mode=GenderMode.NONE)  # Baby Angels apparently don't have genders.
+    0x1F47C,
+    defaults_to_text=False,
+    supports_modification=True,
+    gender_mode=GenderMode.NONE)  # Baby Angels apparently don't have genders.
 
 
 index_pointing_up = Emoji(
-        0x261d,
-        defaults_to_text=True,
-        supports_modification=True,
-        gender_mode=GenderMode.NONE)
+    0x261d,
+    defaults_to_text=True,
+    supports_modification=True,
+    gender_mode=GenderMode.NONE)
 
 
 police_officer = Emoji(
@@ -55,3 +55,19 @@ genie = Emoji(
     defaults_to_text=False,
     supports_modification=False,
     gender_mode=GenderMode.SIGN_FORMAT)
+
+
+MODIFIER_SKIN_TONE_LIGHT = '\U0001F3FB'
+MODIFIER_SKIN_TONE_MEDIUM_LIGHT = '\U0001F3FC'
+MODIFIER_SKIN_TONE_MEDIUM = '\U0001F3FD'
+MODIFIER_SKIN_TONE_MEDIUM_DARK = '\U0001F3FE'
+MODIFIER_SKIN_TONE_DARK = '\U0001F3FF'
+
+
+ALL_FIXTURE_EMOJI = [pencil, tent, baby_angel, index_pointing_up, police_officer, detective, genie]
+ALL_KNOWN_MODIFIERS = [
+    MODIFIER_SKIN_TONE_LIGHT,
+    MODIFIER_SKIN_TONE_MEDIUM_LIGHT,
+    MODIFIER_SKIN_TONE_MEDIUM,
+    MODIFIER_SKIN_TONE_MEDIUM_DARK,
+    MODIFIER_SKIN_TONE_DARK]

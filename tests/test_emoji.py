@@ -1,8 +1,6 @@
 from emoji.core import Gender
 from tests.fixture_emoji import baby_angel, detective, genie, index_pointing_up, pencil, \
-    police_officer, tent
-
-MODIFIER_DARK_SKIN = '\U0001F3FF'
+    police_officer, tent, MODIFIER_SKIN_TONE_DARK
 
 
 def from_cps(codepoints: str) -> str:
@@ -28,7 +26,7 @@ def test_modifiable_default_emoji_with_no_modifier():
 
 
 def test_modifiable_default_emoji_with_modifier():
-    assert baby_angel.char(modifier=MODIFIER_DARK_SKIN) == from_cps('1F47C 1F3FF')
+    assert baby_angel.char(modifier=MODIFIER_SKIN_TONE_DARK) == from_cps('1F47C 1F3FF')
 
 
 def test_modifiable_default_text_with_modifier():
@@ -39,7 +37,7 @@ def test_modifiable_default_text_with_modifier():
     """
 
     # Note absence of trailing FE0F
-    assert index_pointing_up.char(modifier=MODIFIER_DARK_SKIN) == from_cps('261D 1F3FF')
+    assert index_pointing_up.char(modifier=MODIFIER_SKIN_TONE_DARK) == from_cps('261D 1F3FF')
 
 
 def test_modifiable_default_text_no_modifier():
@@ -56,7 +54,7 @@ def test_gendered_role_emoji_modifiable():
     assert (
         police_officer.char(
             gender=Gender.FEMININE,
-            modifier=MODIFIER_DARK_SKIN) ==
+            modifier=MODIFIER_SKIN_TONE_DARK) ==
         from_cps('1F46E 1F3FF 200D 2640 FE0F'))
 
 
@@ -70,9 +68,9 @@ def test_gendered_role_with_modifiers_default_text():
     assert (
         detective.char(
             gender=Gender.FEMININE,
-            modifier=MODIFIER_DARK_SKIN) ==
+            modifier=MODIFIER_SKIN_TONE_DARK) ==
         from_cps('1F575 1F3FF 200D 2640 FE0F'))
-    assert detective.char(modifier=MODIFIER_DARK_SKIN) == from_cps('1F575 1F3FF')
+    assert detective.char(modifier=MODIFIER_SKIN_TONE_DARK) == from_cps('1F575 1F3FF')
 
 
 def test_from_cps():

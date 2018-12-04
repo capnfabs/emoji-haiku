@@ -1,6 +1,6 @@
 """Renders emojis into unicode sequences."""
 import enum
-from typing import NamedTuple
+from typing import NamedTuple, Any, Tuple
 
 from emoji import emoji_unicode_11_manual_supplement as supplement
 
@@ -103,6 +103,20 @@ class Emoji:
             built_str += _ZWJ + gender.value.sign_format + _EMOJI_PRESENTATION_SELECTOR
 
         return built_str
+
+    def _tuple(self) -> Tuple:
+        """Returns a tuple representation of the object, which includes _all information_ which
+        makes up the object definition. Use this for equality comparisons and hashing, for example.
+        """
+        return self.codepoint, self.defaults_to_text, self.supports_modification, self.gender_mode
+
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, Emoji):
+            return False
+        return self._tuple() == other._tuple()
+
+    def __hash__(self) -> int:
+        return self._tuple().__hash__()
 
     @property
     def supports_gender(self) -> bool:
