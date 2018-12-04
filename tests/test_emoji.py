@@ -1,4 +1,6 @@
-from emoji.core import Emoji, Gender, GenderMode
+from emoji.core import Gender
+from tests.fixture_emoji import baby_angel, detective, genie, index_pointing_up, pencil, \
+    police_officer, tent
 
 MODIFIER_DARK_SKIN = '\U0001F3FF'
 
@@ -12,29 +14,12 @@ def from_cps(codepoints: str) -> str:
 
 def test_renders_emoji_presentation():
     # This Emoji defaults to text, check that it renders as Emoji
-    pencil = Emoji(
-        0x270F,
-        defaults_to_text=True,
-        supports_modification=False,
-        gender_mode=GenderMode.NONE)
     assert pencil.char() == from_cps('270F FE0F')
 
 
 def test_renders_emoji_presentation_default_emoji():
     # This Emoji defaults to Emoji, check that it doesn't have an extra presentation char
-    tent = Emoji(
-        0x26FA,
-        defaults_to_text=False,
-        supports_modification=False,
-        gender_mode=GenderMode.NONE)
     assert tent.char() == from_cps('26FA')
-
-
-baby_angel = Emoji(
-        0x1F47C,
-        defaults_to_text=False,
-        supports_modification=True,
-        gender_mode=GenderMode.NONE)  # Baby Angels apparently don't have genders.
 
 
 def test_modifiable_default_emoji_with_no_modifier():
@@ -44,16 +29,6 @@ def test_modifiable_default_emoji_with_no_modifier():
 
 def test_modifiable_default_emoji_with_modifier():
     assert baby_angel.char(modifier=MODIFIER_DARK_SKIN) == from_cps('1F47C 1F3FF')
-
-
-# We could probably use a fixture for this, but we don't need it.
-# I don't understand what benefit a fixture would provide in this scenario, but maybe I should
-# make an effort to understand that sometime.
-index_pointing_up = Emoji(
-        0x261d,
-        defaults_to_text=True,
-        supports_modification=True,
-        gender_mode=GenderMode.NONE)
 
 
 def test_modifiable_default_text_with_modifier():
@@ -74,13 +49,6 @@ def test_modifiable_default_text_no_modifier():
     assert index_pointing_up.char() == from_cps('261D FE0F')
 
 
-police_officer = Emoji(
-    0x1F46E,
-    defaults_to_text=False,
-    supports_modification=True,
-    gender_mode=GenderMode.SIGN_FORMAT)
-
-
 def test_gendered_role_emoji_modifiable():
     assert police_officer.char() == from_cps('1F46E')
     assert (police_officer.char(gender=Gender.FEMININE) ==
@@ -92,22 +60,8 @@ def test_gendered_role_emoji_modifiable():
         from_cps('1F46E 1F3FF 200D 2640 FE0F'))
 
 
-genie = Emoji(
-    0x1F9DE,
-    defaults_to_text=False,
-    supports_modification=False,
-    gender_mode=GenderMode.SIGN_FORMAT)
-
-
 def test_gendered_role_emoji_nonmodifiable():
     assert genie.char(gender=Gender.MASCULINE) == from_cps('1F9DE 200D 2642 FE0F')
-
-
-detective = Emoji(
-    0x1F575,
-    defaults_to_text=True,
-    supports_modification=True,
-    gender_mode=GenderMode.SIGN_FORMAT)
 
 
 def test_gendered_role_with_modifiers_default_text():
