@@ -1,27 +1,41 @@
-import json
 import random
-from typing import Dict, List, Tuple
+from typing import Dict, Iterable, List, Tuple
 
-from emoji.descriptions import EmojiDetails
-
-
-# TODO(fabian): Now that we've library-fied the emoji stuff, we should get rid of the save/load
-# thing.
-def _load_data() -> Dict[int, List[EmojiDetails]]:
-    with open('build/generated.json') as file:
-        thingy = json.load(file)
-        thingy = [EmojiDetails(*thing) for thing in thingy]
-    wup: Dict[int, List[EmojiDetails]] = {}
-    for item in thingy:
-        for syllables in item.syllable_counts:
-            if syllables not in wup:
-                wup[syllables] = []
-            wup[syllables].append(item)
-
-    return wup
+from emoji import descriptions, spec_parser
+from emoji.core import Emoji, Gender, Modifier
+from syllables import count_syllables
 
 
-data = _load_data()
+def _load_resources() -> Tuple[Dict[str, Emoji], List[Modifier], Dict[str, str]]:
+    emoji_list, modifier_list = spec_parser.load_emoji_and_modifiers()
+    modifiers = list(modifier_list)
+
+    emojis_and_descriptions = list(descriptions.extract_emoji_pairs())
+
+    common_set = {e.base_char for e in emoji_list} & {e for e, _ in emojis_and_descriptions}
+
+    emoji_to_description = {e: desc for e, desc in emojis_and_descriptions if e in common_set}
+    emojis = {e.base_char: e for e in emoji_list if e.base_char in common_set}
+    return emojis, modifiers, emoji_to_description
+
+
+def _map_description_to_emoji_and_syllable_count(
+        emoji_desc_pairs: Iterable[Tuple[str, str]]) -> Dict[int, List[Tuple[str, str]]]:
+    # TODO: commenting this is hard but probably worthwhile because this code is mad confusing.
+    return_dict: Dict[int, List[Tuple[str, str]]] = {}
+    for char, desc in emoji_desc_pairs:
+        syllable_options = count_syllables(desc)
+        for syllable_count in syllable_options:
+            list_for_syllable_count = return_dict.get(syllable_count, [])
+            list_for_syllable_count.append((char, desc))
+            return_dict[syllable_count] = list_for_syllable_count
+    return return_dict
+
+
+cp_to_emoji_obj, modifiers, emojis_to_descriptions = _load_resources()
+
+
+data = _map_description_to_emoji_and_syllable_count(emojis_to_descriptions.items())
 
 
 def _make_line(syllable_count: int) -> Tuple[str, str]:
@@ -38,9 +52,17 @@ def _make_line(syllable_count: int) -> Tuple[str, str]:
         syllables_per_emoji.append(*elements)
 
     objs = list(random.choice(data[syll]) for syll in syllables_per_emoji)
-    emojis = " ".join(obj.emoji for obj in objs)
-    descriptions = " ".join(obj.description.upper() for obj in objs)
+    chosen_codepoints = (obj[0] for obj in objs)
+    emojis = " ".join(_render_emoji(cp_to_emoji_obj[cp]) for cp in chosen_codepoints)
+    descriptions = " ".join(obj[1].upper() for obj in objs)
     return emojis, descriptions
+
+
+def _render_emoji(emoji: Emoji) -> str:
+    modifier = random.choice(modifiers) if emoji.supports_modification else None
+    gender = random.choice(
+        [Gender.MASCULINE, Gender.FEMININE]) if emoji.supports_gender else Gender.NEUTRAL
+    return emoji.char(modifier=modifier, gender=gender)
 
 
 def haiku() -> Tuple[str, str]:
