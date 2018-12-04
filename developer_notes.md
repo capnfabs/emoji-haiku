@@ -28,7 +28,7 @@ The directory `datasources/emoji-unicode-11` is a copy of https://unicode.org/Pu
 According to spec, valid unicode codepoints are from 0x0 to 0x10FFFF (see http://unicode.org/glossary/#code_point).
 
 # TODO:
-- Maybe add more emoji. We're missing flags, for example, and they were something I liked about v1?
+- Maybe add more emoji. We're missing flags and families. I don't know if they're super necessary, but I sorta liked the flags in v1.
 - Sort out genders in the CLDR XML descriptions. There's a few pieces here:
   - Modify the description parsing code to scan the CLDR XML file and deduplicate (for example) 'man artist' 'woman artist'.
   - This is complicated though, because the verb ones still need an actor, I think. We can make it sometimes say "person" instead of "man" or "woman" as well though.
