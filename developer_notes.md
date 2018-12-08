@@ -28,8 +28,18 @@ The directory `datasources/emoji-unicode-11` is a copy of https://unicode.org/Pu
 According to spec, valid unicode codepoints are from 0x0 to 0x10FFFF (see http://unicode.org/glossary/#code_point).
 
 # TODO:
-- Maybe add more emoji. We're missing flags and families. I don't know if they're super necessary, but I sorta liked the flags in v1.
-- Sort out genders in the CLDR XML descriptions. There's a few pieces here:
-  - Modify the description parsing code to scan the CLDR XML file and deduplicate (for example) 'man artist' 'woman artist'.
-  - This is complicated though, because the verb ones still need an actor, I think. We can make it sometimes say "person" instead of "man" or "woman" as well though.
+- Rework the way we distinguish between gendered emojis. Goodness gracious; there's so many if/else statements here.
+- We're missing flags and families. I don't know if they're super necessary, but I sorta liked the flags in v1.
+- Maybe add something that randomly changes 'person running' to 'man running' and 'woman running'.
   - Also have to watch out for merman/merperson/mermaid 🧜‍♂️ 🧜‍♀️
+
+
+## Blog post stuff
+
+Stuff that's happened since I wrote the first Emoji Haiku:
+- Multiple versions of the Emoji Spec!
+- Apple changed the pistol to a water gun.
+- People started to become more observant about how weird emoji names sound on twitter, thanks to Kai: https://twitter.com/kai_wanders/status/1013386281408192513
+  - Apologies to people looking at these on a screen reader.
+
+I originally thought that gendering was either SIGN MODE or OBJECT MODE. Turns out OBJECT MODE is _really really complicated_, and isn't really a mode, but actually an entirely different way of thinking. The official spec treating them very differently should have probably been a hint for this.

@@ -6,33 +6,29 @@ from emoji.core import Emoji, Gender, Modifier
 from syllables import count_syllables
 
 
-def _load_resources() -> Tuple[Dict[str, Emoji], List[Modifier], Dict[str, str]]:
-    emoji_list, modifier_list = spec_parser.load_emoji_and_modifiers()
+def _load_resources() -> Tuple[Dict[Emoji, str], List[Modifier]]:
+    _, modifier_list = spec_parser.load_emoji_and_modifiers()
     modifiers = list(modifier_list)
 
-    emojis_and_descriptions = list(descriptions.extract_emoji_pairs())
+    emojis_and_descriptions = dict(descriptions.load_emoji_description_pairs())
 
-    common_set = {e.base_char for e in emoji_list} & {e for e, _ in emojis_and_descriptions}
-
-    emoji_to_description = {e: desc for e, desc in emojis_and_descriptions if e in common_set}
-    emojis = {e.base_char: e for e in emoji_list if e.base_char in common_set}
-    return emojis, modifiers, emoji_to_description
+    return emojis_and_descriptions, modifiers
 
 
 def _map_description_to_emoji_and_syllable_count(
-        emoji_desc_pairs: Iterable[Tuple[str, str]]) -> Dict[int, List[Tuple[str, str]]]:
+        emoji_desc_pairs: Iterable[Tuple[Emoji, str]]) -> Dict[int, List[Tuple[Emoji, str]]]:
     # TODO: commenting this is hard but probably worthwhile because this code is mad confusing.
-    return_dict: Dict[int, List[Tuple[str, str]]] = {}
-    for char, desc in emoji_desc_pairs:
+    return_dict: Dict[int, List[Tuple[Emoji, str]]] = {}
+    for emoji, desc in emoji_desc_pairs:
         syllable_options = count_syllables(desc)
         for syllable_count in syllable_options:
             list_for_syllable_count = return_dict.get(syllable_count, [])
-            list_for_syllable_count.append((char, desc))
+            list_for_syllable_count.append((emoji, desc))
             return_dict[syllable_count] = list_for_syllable_count
     return return_dict
 
 
-cp_to_emoji_obj, modifiers, emojis_to_descriptions = _load_resources()
+emojis_to_descriptions, modifiers = _load_resources()
 
 
 data = _map_description_to_emoji_and_syllable_count(emojis_to_descriptions.items())
@@ -52,8 +48,8 @@ def _make_line(syllable_count: int) -> Tuple[str, str]:
         syllables_per_emoji.append(*elements)
 
     objs = list(random.choice(data[syll]) for syll in syllables_per_emoji)
-    chosen_codepoints = (obj[0] for obj in objs)
-    emojis = " ".join(_render_emoji(cp_to_emoji_obj[cp]) for cp in chosen_codepoints)
+    chosen_emojis = (obj[0] for obj in objs)
+    emojis = " ".join(_render_emoji(emoji) for emoji in chosen_emojis)
     descriptions = " ".join(obj[1].upper() for obj in objs)
     return emojis, descriptions
 

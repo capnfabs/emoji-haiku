@@ -5,7 +5,7 @@ from emoji.spec_parser import load_emoji_and_modifiers
 def main() -> None:
     emoji_list, modifiers = load_emoji_and_modifiers()
 
-    d = {e.emoji: e for e in descriptions.extract_emoji_pairs()}
+    d = {e.base_char: desc for e, desc in descriptions.load_emoji_description_pairs()}
     emoji_dict = {e.base_char: e for e in emoji_list}
 
     for emoji in sorted(emoji_dict.keys() ^ d.keys()):

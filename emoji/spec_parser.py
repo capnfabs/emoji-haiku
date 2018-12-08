@@ -105,8 +105,16 @@ def load_emoji_and_modifiers() -> EmojiData:
             modifiable = 'Emoji_Modifier_Base' in v.classes
             defaults_to_text = 'Emoji_Presentation' not in v.classes
             gender_mode = _get_gender_mode(k)
-            emojis.append(Emoji(k, defaults_to_text, modifiable, gender_mode))
-        elif (v.classes & {'Emoji', 'Emoji_Modifier'}) == {'Emoji', 'Emoji_Modifier'}:
+
+            if gender_mode == GenderMode.OBJECT_FORMAT:
+                # The non-gendered case has a different meaning from the gendered cases, so add both
+                # an Emoji with GenderMode.NONE _and_ an Emoji with GenderMode.OBJECT_FORMAT. The
+                # gendered cases are always modifiable (by manually examining the spec).
+                emojis.append(Emoji(k, defaults_to_text, modifiable, GenderMode.NONE))
+                emojis.append(Emoji(k, defaults_to_text, True, GenderMode.OBJECT_FORMAT))
+            else:
+                emojis.append(Emoji(k, defaults_to_text, modifiable, gender_mode))
+        elif {'Emoji', 'Emoji_Modifier'} <= v.classes:
             # it's a modifier!
             modifiers.append(chr(k))
         else:

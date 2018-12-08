@@ -23,7 +23,11 @@ class GenderMode(enum.Enum):
     NONE = enum.auto()
     # The character can be gender-modified, using Sign Format (see The Spec).
     SIGN_FORMAT = enum.auto()
-    # The character can be gender-modified, using Object Format (see The Spec).
+    # The character _must_ be gender-modified, using Object Format (see The Spec), in order to
+    # retain its fundamental meaning. An example:
+    #  - 1F468 200D 1F3EB is 'man teacher'
+    #  - 1F469 200D 1F3EB is 'woman teacher'
+    #  - 1F3EB is 'school'.
     OBJECT_FORMAT = enum.auto()
 
 
@@ -72,7 +76,13 @@ class Emoji:
         if gender != Gender.NEUTRAL:
             assert self.supports_gender
 
-        if gender != Gender.NEUTRAL and self.gender_mode == GenderMode.OBJECT_FORMAT:
+        if self.must_gender:
+            # Force users to explicitly choose, rather than choose a default. Alternatively, I'd be
+            # sorta happy to just pick one randomly, but the non-determinism of that is scary for
+            # something that's supposed to be relatively well encapsulated.
+            assert gender != Gender.NEUTRAL
+
+        if self.gender_mode == GenderMode.OBJECT_FORMAT:
             # This is an entirely different way of building an emoji. This is because this mode has
             # the MAN or WOMAN emoji as the primary emoji, and then the action is a secondary which
             # is joined on to the end. It would probably be cleaner to abstract this somehow to
@@ -121,6 +131,14 @@ class Emoji:
     @property
     def supports_gender(self) -> bool:
         return self.gender_mode != GenderMode.NONE
+
+    @property
+    def must_gender(self) -> bool:
+        """Certain emoji _must_ be gendered to retain meaning, or otherwise they have a different
+        visual appearance. For example:
+        ⚕ = "medical symbol", 👨‍⚕= "man health worker", 👩‍⚕= "woman health worker".
+        """
+        return self.gender_mode == GenderMode.OBJECT_FORMAT
 
     def __repr__(self) -> str:
         return (f'Emoji('
