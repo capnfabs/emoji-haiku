@@ -1,3 +1,4 @@
+import json
 from typing import Any
 
 from api.aws import LambdaContext
@@ -9,6 +10,11 @@ def haiku_handler(_: Any, __: LambdaContext) -> Any:
     """AWS Lambda entrypoint. Generates a single Haiku."""
     h = haiku()
     return {
-        'emoji': h[0],
-        'descriptions': h[1],
+        "isBase64Encoded": False,
+        "statusCode": 200,
+        "headers": {},
+        "body": json.dumps({
+            'emoji': h[0],
+            'descriptions': h[1],
+        })
     }
