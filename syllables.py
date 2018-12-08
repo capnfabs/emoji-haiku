@@ -4,7 +4,7 @@ from collections import defaultdict
 from typing import Dict, Iterable, Set
 
 # TODO: document this.
-OVERRIDES = {
+_OVERRIDES = {
     '1ST': 1,
     '2ND': 2,
     '3': 1,
@@ -70,7 +70,7 @@ def _load_vowels() -> Iterable[str]:
                 yield sound
 
 
-def _load_syllables_per_word() -> Dict[str, Set[int]]:
+def _load_syllables_per_word_cmu() -> Dict[str, Set[int]]:
     vowels = set(_load_vowels())
     dataset: Dict[str, Set[int]] = defaultdict(lambda: set())
 
@@ -98,12 +98,18 @@ def _load_syllables_per_word() -> Dict[str, Set[int]]:
     return dict(dataset)
 
 
-_source_dict = _load_syllables_per_word()
+def _apply_overrides(
+        source_dict: Dict[str, Set[int]], overrides: Dict[str, int]) -> Dict[str, Set[int]]:
+    # Make a copy
+    source_dict = dict(source_dict)
 
-# TODO: move this somewhere.
-# Add the overrides
-for key, val in OVERRIDES.items():
-    _source_dict[key] = {val}
+    for key, val in overrides.items():
+        source_dict[key] = {val}
+
+    return source_dict
+
+
+_source_dict = _apply_overrides(_load_syllables_per_word_cmu(), _OVERRIDES)
 
 
 def count_syllables(input: str) -> Set[int]:

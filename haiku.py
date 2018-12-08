@@ -31,10 +31,10 @@ def _map_description_to_emoji_and_syllable_count(
     return return_dict
 
 
-emojis_to_descriptions, modifiers = _load_resources()
+_emojis_to_descriptions, modifiers = _load_resources()
 
 
-data = _map_description_to_emoji_and_syllable_count(emojis_to_descriptions.items())
+_data = _map_description_to_emoji_and_syllable_count(_emojis_to_descriptions.items())
 
 
 def _make_line(syllable_count: int) -> Tuple[str, str]:
@@ -44,13 +44,13 @@ def _make_line(syllable_count: int) -> Tuple[str, str]:
         # This feels hard to read. fix this.
         # The idea is - weight longer emojis in proportion to lengths.
         allowable_sets = sorted(
-            (k, v) for k, v in data.items()
+            (k, v) for k, v in _data.items()
             if k <= syllable_count - sum(syllables_per_emoji))
         keys, _ = zip(*allowable_sets)
         elements = random.choices(keys, weights=[key * len(val) for key, val in allowable_sets])
         syllables_per_emoji.append(*elements)
 
-    objs = list(random.choice(data[syll]) for syll in syllables_per_emoji)
+    objs = list(random.choice(_data[syll]) for syll in syllables_per_emoji)
     chosen_emojis = (obj[0] for obj in objs)
     emojis = " ".join(_render_emoji(emoji) for emoji in chosen_emojis)
     descriptions = " ".join(obj[1].upper() for obj in objs)
