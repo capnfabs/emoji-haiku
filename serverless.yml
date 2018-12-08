@@ -7,10 +7,7 @@ provider:
   # Keep this in sync with the one in the Pipfile.
   runtime: python3.6
 
-# TODO(fabian): I don't know why this works, and I suspect it _shouldn't_. This is probably
-# because running `serverless deploy` just ships all files in the current directory to AWS 
-# indiscriminately (I guess), and I'm not trying to build anything properly with
-# `serverless package`.
+# TODO(fabian): I don't know why this works, and I suspect it _shouldn't_.
 package:
   include:
     - common/**
