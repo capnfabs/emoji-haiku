@@ -9,7 +9,7 @@ provider:
 
 # TODO(fabian): I don't know why this works, and I suspect it _shouldn't_. This is probably
 # because running `serverless deploy` just ships all files in the current directory to AWS 
-# indiscriminantly (I guess), and I'm not trying to build anything properly with 
+# indiscriminately (I guess), and I'm not trying to build anything properly with
 # `serverless package`.
 package:
   include:
