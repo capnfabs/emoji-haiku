@@ -57,6 +57,25 @@ genie = Emoji(
     gender_mode=GenderMode.SIGN_FORMAT)
 
 
+# I've historically had a lot of trouble getting object-format gendered emojis correct. 'Judge' and
+# 'Balance scale' are two separate visual emoji. 'Judge' is comprised of MAN or WOMAN + ZWJ +
+# BALANCE SCALE, so I added both of these to the test to ensure that they're correctly and
+# separately interpreted.
+judge = Emoji(
+    0x2696,
+    defaults_to_text=True,
+    supports_modification=True,
+    gender_mode=GenderMode.OBJECT_FORMAT
+)
+
+balance_scale = Emoji(
+    0x2696,
+    defaults_to_text=True,
+    supports_modification=False,
+    gender_mode=GenderMode.NONE,
+)
+
+
 MODIFIER_SKIN_TONE_LIGHT = '\U0001F3FB'
 MODIFIER_SKIN_TONE_MEDIUM_LIGHT = '\U0001F3FC'
 MODIFIER_SKIN_TONE_MEDIUM = '\U0001F3FD'
@@ -64,10 +83,23 @@ MODIFIER_SKIN_TONE_MEDIUM_DARK = '\U0001F3FE'
 MODIFIER_SKIN_TONE_DARK = '\U0001F3FF'
 
 
-ALL_FIXTURE_EMOJI = [pencil, tent, baby_angel, index_pointing_up, police_officer, detective, genie]
+ALL_FIXTURE_EMOJI = [
+    pencil,
+    tent,
+    baby_angel,
+    index_pointing_up,
+    police_officer,
+    detective,
+    genie,
+    judge,
+    balance_scale,
+]
+
+
 ALL_KNOWN_MODIFIERS = [
     MODIFIER_SKIN_TONE_LIGHT,
     MODIFIER_SKIN_TONE_MEDIUM_LIGHT,
     MODIFIER_SKIN_TONE_MEDIUM,
     MODIFIER_SKIN_TONE_MEDIUM_DARK,
-    MODIFIER_SKIN_TONE_DARK]
+    MODIFIER_SKIN_TONE_DARK,
+]

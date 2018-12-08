@@ -7,12 +7,15 @@ from syllables import count_syllables
 
 
 def _load_resources() -> Tuple[Dict[Emoji, str], List[Modifier]]:
-    _, modifier_list = spec_parser.load_emoji_and_modifiers()
+    emojis, modifier_list = spec_parser.load_emoji_and_modifiers()
     modifiers = list(modifier_list)
 
-    emojis_and_descriptions = dict(descriptions.load_emoji_description_pairs())
+    emoji_descriptions = list(descriptions.load_descriptions_for_emojis(emojis))
 
-    return emojis_and_descriptions, modifiers
+    # Filter out anything where we couldn't load the description
+    emojis_to_descriptions = {e: d for e, d in zip(emojis, emoji_descriptions) if d is not None}
+
+    return emojis_to_descriptions, modifiers
 
 
 def _map_description_to_emoji_and_syllable_count(
