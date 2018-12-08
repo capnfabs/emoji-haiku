@@ -37,6 +37,7 @@ Welcome, adventurer! Here's a guide to how this code works.
 - Set up your credentials from Amazon Web Services (because you can host this on AWS Lambda): `serverless config credentials --provider aws --key [key] --secret [secret]`
 - You can deploy it with `serverless deploy -v`
 - After deploy, check it works with `serverless invoke -f haiku -l`
+  - This is "invoke `-f`unction haiku `-l`ogs"
   - If something isn't working, `serverless.yml` is where the config is at.
 
 ## References / resources I used on the way

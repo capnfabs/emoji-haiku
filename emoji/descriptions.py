@@ -52,3 +52,5 @@ def load_descriptions_for_emojis(emojis: Iterable[Emoji]) -> Iterable[Optional[s
             # be represented in the CLDR source right now, which is why this conditional exists.
             if e.base_char in cp_to_tts:
                 yield cp_to_tts[e.base_char]
+            else:
+                yield None
