@@ -7,7 +7,8 @@ provider:
   # Keep this in sync with the one in the Pipfile.
   runtime: python3.6
 
-# TODO(fabian): I don't know why this works, and I suspect it _shouldn't_.
+# TODO(fabian): I don't think this section actually has any effect, and I'm not
+# sure how much of a problem that is.
 package:
   include:
     - api/**
@@ -23,6 +24,9 @@ functions:
       - http:
           path: haiku
           method: get
+          # I'm pretty sure we don't need this for GET requests - it's just for
+          # handling preflight requests - but I don't want to risk it.
+          cors: true
 
 plugins:
   - serverless-python-requirements

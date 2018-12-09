@@ -12,7 +12,9 @@ def haiku_handler(_: Any, __: LambdaContext) -> Any:
     return {
         "isBase64Encoded": False,
         "statusCode": 200,
-        "headers": {},
+        "headers": {
+            'Access-Control-Allow-Origin': '*',
+        },
         "body": json.dumps({
             'emoji': h[0],
             'descriptions': h[1],
