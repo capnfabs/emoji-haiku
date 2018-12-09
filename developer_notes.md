@@ -74,3 +74,8 @@ Here's everything you might need to know about the unicode spec.
     - Apologies to people looking at Emoji Haiku on a screen reader.
     - Note also that people who historically haven't used screen-readers are now affected by this too, e.g. [in-car reading of text messages](https://www.theguardian.com/lifeandstyle/2018/dec/08/tim-dowling-hallucinating-wife-talking-to-car)
 - I originally thought that gendering was either SIGN MODE or OBJECT MODE. Turns out OBJECT MODE is _really really complicated_, and isn't really a mode, but actually an entirely different way of thinking. The official spec treating them very differently should have probably been a hint for this. There's probably something interesting to talk about here, though I haven't distilled _what_ exactly.
+- It's super hard to get these details right:
+  - Edge bug: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/13583622/
+  - Chrome on OSX (possibly other) platforms where rendering doesn't work correctly on ZWJ sequences without setting the font correctly.
+    -  Compare Woman Zombie on Emojipedia, which renders correctly: https://emojipedia.org/woman-zombie/
+  - Adding a MEN WITH RABBIT EARS emoji 👯‍♂️to my Twitter handle broke my blog rendering due to an encoding issue. Wow. I don't even _know_ who is at fault for this.
