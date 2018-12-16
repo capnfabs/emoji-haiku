@@ -5,13 +5,14 @@ name = "pypi"
 
 [packages]
 beautifulsoup4 = "*"
-pytest = "*"
 
 [dev-packages]
 ipython = "*"
 pylint = "*"
 mypy = "*"
 flake8 = "*"
+parameterized = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.6"
