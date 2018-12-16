@@ -27,6 +27,13 @@ functions:
           # I'm pretty sure we don't need this for GET requests - it's just for
           # handling preflight requests - but I don't want to risk it.
           cors: true
+          request:
+            parameters:
+              querystrings:
+                # false = Optional
+                modifier: false
+                # false = Optional
+                gender: false
 
 plugins:
   - serverless-python-requirements

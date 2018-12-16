@@ -1,5 +1,6 @@
+import enum
 import random
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, Iterable, List, Tuple, Optional, NamedTuple
 
 from emoji import descriptions, spec_parser
 from emoji.core import Emoji, Gender, Modifier
@@ -42,9 +43,9 @@ _emojis_to_descriptions, modifiers = _load_resources()
 _data = _map_description_to_emoji_and_syllable_count(_emojis_to_descriptions.items())
 
 
-def _make_line(syllable_count: int) -> Tuple[str, str]:
+def _make_line(syllable_count: int) -> Tuple[List[Emoji], List[str]]:
     """Make a Haiku line with the given number of syllables.
-    Returns a Tuple of (emoji representation, text representation).
+    Returns a Tuple of (List[Emoji], List[Description]).
     """
     syllables_per_emoji: List[int] = []
 
@@ -70,30 +71,77 @@ def _make_line(syllable_count: int) -> Tuple[str, str]:
 
     # Choose emojis for the given syllable count
     objs = list(random.choice(_data[syll]) for syll in syllables_per_emoji)
-    chosen_emojis = (emoji for emoji, desc in objs)
-
-    # Format and return.
-    emojis = " ".join(_render_emoji(emoji) for emoji in chosen_emojis)
-    descriptions = " ".join(desc.upper() for emoji, desc in objs)
-    return emojis, descriptions
+    # You can apparently use zip(*objs) for this but it's (a) inscrutable (b) confusing to Mypy
+    return list(emoji for emoji, _ in objs), list(desc for _, desc in objs)
 
 
-def _render_emoji(emoji: Emoji) -> str:
-    """Render an Emoji into unicode, randomly applying skin color modifiers and gender.
+class RenderGender(enum.Enum):
+    """This maybe isn't the best name but I like that it rhymes lol"""
+    DONT_CARE = enum.auto()
+    FEMININE = enum.auto()
+    MASCULINE = enum.auto()
+
+
+def _choose_modifier(emoji: Emoji, force_modifier: Optional[str]) -> Optional[str]:
+    if not emoji.supports_modification:
+        return None
+    if force_modifier:
+        return force_modifier
+    return random.choice(modifiers)
+
+
+def _choose_gender(emoji: Emoji, force_gender: RenderGender) -> Gender:
+    if not emoji.supports_gender:
+        return Gender.NEUTRAL
+
+    if force_gender == RenderGender.DONT_CARE:
+        # Don't use neutral gender, even if available on an emoji, because part of the reason why
+        # the genders were added to unicode were because things were previously pretty heavily
+        # gender-coded.
+        return random.choice([Gender.MASCULINE, Gender.FEMININE])
+    elif force_gender == RenderGender.FEMININE:
+        return Gender.FEMININE
+    elif force_gender == RenderGender.MASCULINE:
+        return Gender.MASCULINE
+    else:
+        assert False
+
+
+def _render_emoji(emoji: Emoji, force_gender: RenderGender, force_modifier: Optional[str]) -> str:
+    """Render an Emoji into unicode, applying skin color modifiers and gender according to
+    arguments.
     """
-    modifier = random.choice(modifiers) if emoji.supports_modification else None
-    # Don't use neutral gender, even if available on an emoji, because part of the reason why the
-    # genders were added to unicode were because things were previously pretty heavily gender-coded.
-    gender = random.choice(
-        [Gender.MASCULINE, Gender.FEMININE]) if emoji.supports_gender else Gender.NEUTRAL
+    modifier = _choose_modifier(emoji, force_modifier)
+    gender = _choose_gender(emoji, force_gender)
     return emoji.char(modifier=modifier, gender=gender)
 
 
-def haiku() -> Tuple[str, str]:
+class Haiku(NamedTuple):
+    emoji: Iterable[List[Emoji]]
+    descriptions: Iterable[List[str]]
+
+    def format(self, force_gender: RenderGender, force_modifier: Optional[str]) -> Tuple[str, str]:
+        """Formats a Haiku into a pair of strings."""
+
+        descs = '\n'.join(' '.join(line) for line in self.descriptions)
+        emojis = '\n'.join(
+            ' '.join(_render_emoji(e, force_gender, force_modifier) for e in line)
+            for line in self.emoji)
+
+        return emojis, descs
+
+
+def formatted_haiku(
+        force_gender: RenderGender = RenderGender.DONT_CARE,
+        force_modifier: Optional[str] = None) -> Tuple[str, str]:
     """Generates a Haiku. Returns a tuple, where:
     - First element is an emoji representation. Each line in the Haiku is separated by a '\n'.
     - Second element is a textual representation.
     """
     haiku_lines = [_make_line(syllable_count) for syllable_count in [5, 7, 5]]
-    emoji, desc = zip(*haiku_lines)
-    return "\n".join(emoji), "\n".join(desc)
+
+    # ok, so there's 3 lines, each in format of List[Emoji], List[Description].
+    # we want to change it to a List[List[Emoji]], List[List[Description].
+    haiku = Haiku(*zip(*haiku_lines))
+
+    return haiku.format(force_gender, force_modifier)
