@@ -17,6 +17,12 @@ package:
     - haiku.py
     - syllables.py
 
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  tweetScheduleEnabled:
+    dev:  false
+    production: true
+
 functions:
   haiku:
     handler: api.entry.haiku_handler
@@ -34,6 +40,17 @@ functions:
                 modifier: false
                 # false = Optional
                 gender: false
+  tweet:
+    handler: api.tweeter.tweet_handler
+    events:
+      - schedule: rate(6 hours)
+      # This magic enables the schedule for prod, but not for dev.
+      - enabled: ${self:custom.tweetScheduleEnabled.${self:custom.stage}}
+    environment:
+      TWITTER_CONSUMER_KEY: ${file(twitter-config.json):twitterConsumerKey}
+      TWITTER_CONSUMER_SECRET: ${file(twitter-config.json):twitterConsumerSecret}
+      TWITTER_ACCESS_TOKEN_KEY: ${file(twitter-config.json):twitterAccessTokenKey}
+      TWITTER_ACCESS_TOKEN_SECRET: ${file(twitter-config.json):twitterAccessTokenSecret}
 
 plugins:
   - serverless-python-requirements

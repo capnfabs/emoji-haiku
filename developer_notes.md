@@ -31,7 +31,7 @@ Welcome, adventurer! Here's a guide to how this code works.
       - Note that there's some emoji that _aren't_ in this file - notably, flags and keycaps. They're in [this file](https://www.unicode.org/repos/cldr/tags/latest/common/annotationsDerived/en.xml) instead.
   - The CMU pronunciation dictionary, which I modified a little, in order to remove some dodgy pronunciations. Download the original [here](http://www.speech.cs.cmu.edu/cgi-bin/cmudict).
 
-### Deploy to AWS lambda?
+## Deploy to AWS lambda?
 
 - This gets done with `serverless`! Which I think is a silly name for a framework. Let's see if it works.
 - Set up your credentials from Amazon Web Services (because you can host this on AWS Lambda): `serverless config credentials --provider aws --key [key] --secret [secret]`
@@ -40,6 +40,16 @@ Welcome, adventurer! Here's a guide to how this code works.
 - After deploy, check it works with `serverless invoke -f haiku -l`
   - This is "invoke `-f`unction haiku `-l`ogs"
   - If something isn't working, `serverless.yml` is where the config is at.
+  
+### Tweeter credentials
+
+If you want to set up tweeting every 6 hours, you need to add twitter configuration variables. These are stored in `twitter-config.json`, which is in `.gitignore`, so you probably won't have this file on your machine when you checkout the code. Here's what to do:
+
+- `cp twitter-config.json.template twitter-config.json` 
+- Create a new app, and get the config values from the [Twitter Developer Site](https://developer.twitter.com/en/apps)
+- Fill them in
+- You should be good to go. 
+ 
 
 ## References / resources I used on the way
 
