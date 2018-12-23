@@ -49,6 +49,7 @@ If you want to set up tweeting every 6 hours, you need to add twitter configurat
 - Create a new app, and get the config values from the [Twitter Developer Site](https://developer.twitter.com/en/apps)
 - Fill them in
 - You should be good to go. 
+- (Note to self - if you lose this file - check the emojihaikus account in 1password).
  
 
 ## References / resources I used on the way
