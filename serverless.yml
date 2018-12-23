@@ -43,9 +43,10 @@ functions:
   tweet:
     handler: api.tweeter.tweet_handler
     events:
-      - schedule: rate(6 hours)
-      # This magic enables the schedule for prod, but not for dev.
-      - enabled: ${self:custom.tweetScheduleEnabled.${self:custom.stage}}
+      - schedule:
+          rate: rate(6 hours)
+          # This magic enables the schedule for prod, but not for dev.
+          enabled: ${self:custom.tweetScheduleEnabled.${self:custom.stage}}
     environment:
       TWITTER_CONSUMER_KEY: ${file(twitter-config.json):twitterConsumerKey}
       TWITTER_CONSUMER_SECRET: ${file(twitter-config.json):twitterConsumerSecret}
