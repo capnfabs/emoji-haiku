@@ -1,7 +1,7 @@
 import os
 from typing import Any
 
-import twitter
+import twitter  # type: ignore
 
 import haiku
 from api.aws import LambdaContext
