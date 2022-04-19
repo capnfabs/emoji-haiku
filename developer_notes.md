@@ -35,22 +35,24 @@ Welcome, adventurer! Here's a guide to how this code works.
 
 - This gets done with `serverless`! Which I think is a silly name for a framework. Let's see if it works.
 - Set up your credentials from Amazon Web Services (because you can host this on AWS Lambda): `serverless config credentials --provider aws --key [key] --secret [secret]`
+- You'll probably need to install the plugins using `serverless plugin install --name serverless-prune-plugin && serverless plugin install --name serverless-python-requirements` (see the `severless.yml` for plugin names; this all uses npm under the hood)
 - You can deploy it with `serverless deploy -v`
   - To deploy to production, add `--stage production`
 - After deploy, check it works with `serverless invoke -f haiku -l`
   - This is "invoke `-f`unction haiku `-l`ogs"
   - If something isn't working, `serverless.yml` is where the config is at.
-  
+  - Remove old versions with `sls prune -n 0 --stage [dev|production]`
+
 ### Tweeter credentials
 
 If you want to set up tweeting every 6 hours, you need to add twitter configuration variables. These are stored in `twitter-config.json`, which is in `.gitignore`, so you probably won't have this file on your machine when you checkout the code. Here's what to do:
 
-- `cp twitter-config.json.template twitter-config.json` 
+- `cp twitter-config.json.template twitter-config.json`
 - Create a new app, and get the config values from the [Twitter Developer Site](https://developer.twitter.com/en/apps)
 - Fill them in
-- You should be good to go. 
+- You should be good to go.
 - (Note to self - if you lose this file - check the emojihaikus account in 1password).
- 
+
 
 ## References / resources I used on the way
 
@@ -61,14 +63,14 @@ Here's everything you might need to know about the unicode spec.
 - There's a note here about 'standardised variants': http://www.unicode.org/Public/7.0.0/ucd/StandardizedVariants.html. Some emoji require adding a suffix of `\uFE0F` in order to get the emoji-style string; without it, they render as outlines / [dingbats](https://en.wiktionary.org/wiki/dingbat#Etymology).
 - Full emoji list: https://unicode.org/emoji/charts/full-emoji-list.html.
   - I think a previous version of Emoji Haiku parsed this file.
-- The official emoji spec: http://www.unicode.org/reports/tr51/tr51-14.html (this is the latest published version as per this commit, corresponding to Unicode 11.) 
+- The official emoji spec: http://www.unicode.org/reports/tr51/tr51-14.html (this is the latest published version as per this commit, corresponding to Unicode 11.)
 - According to spec, valid unicode codepoints are from 0x0 to 0x10FFFF (see http://unicode.org/glossary/#code_point).
 
 
 # TODO / possible enhancements
 - **[refactor]** Rework the way we distinguish between gendered emojis. Goodness gracious; there's so many if/else statements here. They're not really the same thing, they just implement the same interface.
 - **[emoji]** We're missing flags and families. I don't know if they're super necessary, but I sorta liked the flags in v1.
-- **[language]** Maybe Re-gender some of the words, some of the time. 
+- **[language]** Maybe Re-gender some of the words, some of the time.
   - I think it adds flavour for the verbs - Maybe add something that randomly changes 'person running' to 'man running' and 'woman running'.
   - I'm pretty keen to keep the professions non-gendered.
   - I'd love to actually use merman / mermaid in addition to merperson 🧜‍♂️ 🧜‍♀️
@@ -81,7 +83,7 @@ Here's everything you might need to know about the unicode spec.
 - Stuff that's happened since I wrote the first Emoji Haiku:
   - Multiple versions of the Emoji Spec!
   - Apple changed the pistol to a water gun.
-  - People started to become more observant about how weird emoji names sound on twitter, thanks to [Kai on Twitter](https://twitter.com/kai_wanders/status/1013386281408192513): 
+  - People started to become more observant about how weird emoji names sound on twitter, thanks to [Kai on Twitter](https://twitter.com/kai_wanders/status/1013386281408192513):
     - Apologies to people looking at Emoji Haiku on a screen reader.
     - Note also that people who historically haven't used screen-readers are now affected by this too, e.g. [in-car reading of text messages](https://www.theguardian.com/lifeandstyle/2018/dec/08/tim-dowling-hallucinating-wife-talking-to-car)
 - I originally thought that gendering was either SIGN MODE or OBJECT MODE. Turns out OBJECT MODE is _really really complicated_, and isn't really a mode, but actually an entirely different way of thinking. The official spec treating them very differently should have probably been a hint for this. There's probably something interesting to talk about here, though I haven't distilled _what_ exactly.

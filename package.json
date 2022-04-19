@@ -2,8 +2,9 @@
   "name": "emoji-haiku",
   "description": "",
   "version": "0.1.0",
-  "dependencies": {},
   "devDependencies": {
-    "serverless-python-requirements": "^4.2.5"
+    "serverless": "^3.14.0",
+    "serverless-prune-plugin": "^2.0.1",
+    "serverless-python-requirements": "^5.4.0"
   }
 }
