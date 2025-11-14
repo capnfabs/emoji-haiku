@@ -35,23 +35,17 @@ Welcome, adventurer! Here's a guide to how this code works.
 
 - This gets done with `serverless`! Which I think is a silly name for a framework. Let's see if it works.
 - Set up your credentials from Amazon Web Services (because you can host this on AWS Lambda): `serverless config credentials --provider aws --key [key] --secret [secret]`
-- You'll probably need to install the plugins using `serverless plugin install --name serverless-prune-plugin && serverless plugin install --name serverless-python-requirements` (see the `severless.yml` for plugin names; this all uses npm under the hood)
-- You can deploy it with `serverless deploy -v`
+- You'll probably need to install the plugins using `serverless plugin install --name serverless-prune-plugin` (see the `severless.yml` for plugin names; this all uses npm under the hood)
+- You can deploy it with `serverless deploy`
   - To deploy to production, add `--stage production`
 - After deploy, check it works with `serverless invoke -f haiku -l`
   - This is "invoke `-f`unction haiku `-l`ogs"
   - If something isn't working, `serverless.yml` is where the config is at.
-  - Remove old versions with `sls prune -n 0 --stage [dev|production]`
+  - Remove old versions with `serverless prune -n 0 --stage [dev|production]`
 
-### Tweeter credentials
+### Tweet thing
 
-If you want to set up tweeting every 6 hours, you need to add twitter configuration variables. These are stored in `twitter-config.json`, which is in `.gitignore`, so you probably won't have this file on your machine when you checkout the code. Here's what to do:
-
-- `cp twitter-config.json.template twitter-config.json`
-- Create a new app, and get the config values from the [Twitter Developer Site](https://developer.twitter.com/en/apps)
-- Fill them in
-- You should be good to go.
-- (Note to self - if you lose this file - check the emojihaikus account in 1password).
+We used to support tweeting automatically :( no longer.
 
 
 ## References / resources I used on the way
